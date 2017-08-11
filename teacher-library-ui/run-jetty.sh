@@ -1,0 +1,1 @@
+mvn run:jetty
