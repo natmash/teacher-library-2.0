@@ -4,6 +4,7 @@ import org.vaadin.dialogs.ConfirmDialog;
 
 import com.nash.teacher.backend.DataService;
 import com.nash.teacher.backend.data.Book;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
@@ -53,8 +54,21 @@ public class BookGrid extends Grid<Book> {
 			if (book.getAvailableCount() <= 0) {
 				// button.setEnabled(false);
 			}
+			
+			Button deleteButton = new Button();
+			deleteButton.setIcon(VaadinIcons.TRASH);
+			deleteButton.addClickListener(click -> ConfirmDialog.show(UI.getCurrent(),
+					"You are deleting " + book.getTitle() + "...", new ConfirmDialog.Listener() {
+				private static final long serialVersionUID = 1L;
+
+				public void onClose(ConfirmDialog dialog) {
+					service.deleteBook(book.getId());
+				}
+			}));
 			layout.addComponent(checkoutButton);
 			layout.addComponent(checkinButton);
+			layout.addComponent(deleteButton);
+			
 			return layout;
 		});
 		setRowHeight(40);
