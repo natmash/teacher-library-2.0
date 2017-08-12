@@ -1,1 +1,0 @@
-$wnd.com_nash_teacher_MyAppWidgetset.runAsyncCallback2('tXb(1828,1,{211:1,1:1});_.Lhb=function j6d(){this.Mhb(this.b)};_.Mhb=function k6d(a){this.Nhb(a)};_.Nhb=function l6d(a){};_.hf=function n6d(){this.Lhb();ktd().Q5(this.a.nc())};fLg(np)(2);\n//# sourceURL=com.nash.teacher.MyAppWidgetset-2.js\n')
