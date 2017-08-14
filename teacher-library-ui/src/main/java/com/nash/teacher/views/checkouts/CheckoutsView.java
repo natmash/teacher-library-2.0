@@ -7,7 +7,6 @@ import com.nash.teacher.backend.DataService;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.data.sort.SortDirection;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.VerticalLayout;
 
 public class CheckoutsView extends VerticalLayout implements View {
@@ -31,8 +30,8 @@ public class CheckoutsView extends VerticalLayout implements View {
 			Map<String, Boolean> sortOrder = sortOrders.stream().collect(Collectors.toMap(sort -> sort.getSorted(),
 					sort -> SortDirection.ASCENDING.equals(sort.getDirection())));
 
-			return service.getCheckouts().stream();
-		}, () -> service.getCheckouts().size());
+			return service.getCheckouts(true).stream();
+		}, () -> service.getCheckouts(true).size());
 
 		addComponent(grid);
 	}

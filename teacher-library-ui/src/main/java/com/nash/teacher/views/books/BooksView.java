@@ -7,10 +7,11 @@ import com.nash.teacher.backend.DataService;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.data.sort.SortDirection;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.GridLayout;
 
-public class BooksView extends VerticalLayout implements View {
+public class BooksView extends GridLayout implements View {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,21 +26,19 @@ public class BooksView extends VerticalLayout implements View {
 		setSpacing(false);
 		addStyleName("books-view");
 		service = DataService.get();
-		
+
 		Button addBookButton = new Button();
 		addBookButton.setCaption("Add...");
 		addComponent(addBookButton);
-		
+		setComponentAlignment(addBookButton, Alignment.TOP_RIGHT);
+
 		grid = new BookGrid(service);
 		grid.setDataProvider(new BookDataProvider(service));
-		grid.setDataProvider((sortOrders, offset, limit) -> {
-			Map<String, Boolean> sortOrder = sortOrders.stream().collect(Collectors.toMap(sort -> sort.getSorted(),
-					sort -> SortDirection.ASCENDING.equals(sort.getDirection())));
-
-			return service.getBooks().stream();
-		}, () -> service.getBooks().size());
 
 		addComponent(grid);
+
+		setRowExpandRatio(0, 1.0f);
+		setRowExpandRatio(1, 10000.0f);
 	}
 
 	@Override

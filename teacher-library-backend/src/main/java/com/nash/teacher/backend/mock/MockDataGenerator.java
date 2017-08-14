@@ -31,7 +31,7 @@ public class MockDataGenerator {
 
 	static List<Book> createBooks() {
 		List<Book> Books = new ArrayList<Book>();
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 5; i++) {
 			Book p = createBook();
 			Books.add(p);
 		}
@@ -61,17 +61,8 @@ public class MockDataGenerator {
 		p.setDescription("description : " + p.getTitle());
 		p.setIsbn("random");
 		p.setPages(212);
+		p.setAvailable(true);
 		return p;
-	}
-
-	private static Set<Checkout> getCheckout(List<Checkout> categories, int min, int max) {
-		int nr = random.nextInt(max) + min;
-		HashSet<Checkout> BookCategories = new HashSet<Checkout>();
-		for (int i = 0; i < nr; i++) {
-			BookCategories.add(categories.get(random.nextInt(categories.size())));
-		}
-
-		return BookCategories;
 	}
 
 	private static String generateTitle() {

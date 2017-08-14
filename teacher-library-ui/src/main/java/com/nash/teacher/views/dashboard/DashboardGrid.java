@@ -16,8 +16,6 @@ public class DashboardGrid extends Grid<Book> {
 		addColumn(Book::getTitle).setCaption("Book Title");
 		addColumn(Book::getAuthor).setCaption("Author");
 		addColumn(Book::getIsbn).setCaption("ISBN");
-		addColumn(Book::getTotalCount).setCaption("Count");
-		addColumn(Book::getAvailableCount).setCaption("Available");
 
 		setRowHeight(40);
 	}

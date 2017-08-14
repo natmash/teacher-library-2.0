@@ -1,4 +1,4 @@
-package com.nash.teacher.samples.authentication;
+package com.nash.teacher.authentication;
 
 /**
  * Default mock implementation of {@link AccessControl}. This implementation

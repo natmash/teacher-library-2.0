@@ -1,4 +1,4 @@
-package com.nash.teacher.samples.authentication;
+package com.nash.teacher.authentication;
 
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;

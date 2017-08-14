@@ -31,9 +31,6 @@ public class CheckoutDataProvider extends AbstractDataProvider<Checkout, String>
 
 	@Override
 	public Stream<Checkout> fetch(Query<Checkout, String> query) {
-		System.out.println(query.getFilter());
-		System.out.println(service.getCheckouts());
-		System.out.println("service : " + service.getCheckouts().stream().sorted().count());
-		return service.getCheckouts().stream().sorted();
+		return service.getCheckouts(true).stream().sorted();
 	}
 }

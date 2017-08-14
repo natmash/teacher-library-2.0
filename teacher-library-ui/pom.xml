@@ -42,11 +42,23 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>teacher-library-backend</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.nash.teacher</groupId>
+			<artifactId>teacher-library-widgetset</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Custom components -->

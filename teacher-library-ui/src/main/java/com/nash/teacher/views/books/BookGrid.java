@@ -21,61 +21,57 @@ public class BookGrid extends Grid<Book> {
 		addColumn(Book::getTitle).setCaption("Book Title");
 		addColumn(Book::getAuthor).setCaption("Author");
 		addColumn(Book::getIsbn).setCaption("ISBN");
-		addColumn(Book::getTotalCount).setCaption("Count");
-		addColumn(Book::getAvailableCount).setCaption("Available");
+		addColumn(Book::getPages).setCaption("Pages");
+		addColumn(Book::isAvailable).setCaption("Available");
 
 		addComponentColumn(book -> {
 			HorizontalLayout layout = new HorizontalLayout();
 			Button checkoutButton = new Button("Checkout");
-			// TODO add listener here so we can add checkouts and set other values
-			checkoutButton.addClickListener(click -> openWindow(book.getTitle()));
-			if (book.getAvailableCount() <= 0) {
-				// button.setEnabled(false);
-			}
+			checkoutButton.addClickListener(click -> openWindow(book));
+
 			Button checkinButton = new Button("Check-In");
 			checkinButton.addClickListener(click -> ConfirmDialog.show(UI.getCurrent(),
 					"You are checking in " + book.getTitle() + "...", new ConfirmDialog.Listener() {
 						private static final long serialVersionUID = 1L;
 
 						public void onClose(ConfirmDialog dialog) {
-							// doesn't make sense if we have available and total
-							// to not have a drop down of who we are checking in
-							// to
-							book.setAvailableCount(book.getAvailableCount() + 1);
-							if (book.getAvailableCount() == book.getTotalCount()) {
+							if (dialog.isConfirmed()) {
+								service.checkin(book.getId());
 								checkinButton.setEnabled(false);
-							}
-
-							if (book.getAvailableCount() > 0) {
 								checkoutButton.setEnabled(true);
+								getDataProvider().refreshAll();
 							}
 						}
 					}));
-			if (book.getAvailableCount() <= 0) {
-				// button.setEnabled(false);
+
+			if (!book.isAvailable()) {
+				checkoutButton.setEnabled(false);
+			} else {
+				checkinButton.setEnabled(false);
 			}
-			
+
 			Button deleteButton = new Button();
 			deleteButton.setIcon(VaadinIcons.TRASH);
 			deleteButton.addClickListener(click -> ConfirmDialog.show(UI.getCurrent(),
 					"You are deleting " + book.getTitle() + "...", new ConfirmDialog.Listener() {
-				private static final long serialVersionUID = 1L;
+						private static final long serialVersionUID = 1L;
 
-				public void onClose(ConfirmDialog dialog) {
-					service.deleteBook(book.getId());
-				}
-			}));
+						public void onClose(ConfirmDialog dialog) {
+							service.deleteBook(book.getId());
+							getDataProvider().refreshAll();
+						}
+					}));
 			layout.addComponent(checkoutButton);
 			layout.addComponent(checkinButton);
 			layout.addComponent(deleteButton);
-			
+
 			return layout;
 		});
 		setRowHeight(40);
 	}
 
-	private void openWindow(final String title) {
-		Window window = new AssignStudentWindow(title);
+	private void openWindow(final Book book) {
+		Window window = new AssignStudentWindow(book, this);
 		UI.getCurrent().addWindow(window);
 	}
 

@@ -22,11 +22,11 @@ public class Book implements Serializable, Comparable<Book> {
 
 	private String description;
 
-	private int totalCount;
-
-	private int availableCount;
+	private boolean available;
 
 	private Owner owner;
+
+	private int totalCheckouts;
 
 	public int getId() {
 		return id;
@@ -84,20 +84,12 @@ public class Book implements Serializable, Comparable<Book> {
 		this.description = description;
 	}
 
-	public int getTotalCount() {
-		return totalCount;
+	public boolean isAvailable() {
+		return available;
 	}
 
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
-
-	public int getAvailableCount() {
-		return availableCount;
-	}
-
-	public void setAvailableCount(int availableCount) {
-		this.availableCount = availableCount;
+	public void setAvailable(boolean available) {
+		this.available = available;
 	}
 
 	public Owner getOwner() {
@@ -111,6 +103,14 @@ public class Book implements Serializable, Comparable<Book> {
 	@Override
 	public String toString() {
 		return getTitle();
+	}
+
+	public int getTotalCheckouts() {
+		return totalCheckouts;
+	}
+
+	public void setTotalCheckouts(int totalCheckouts) {
+		this.totalCheckouts = totalCheckouts;
 	}
 
 	@Override

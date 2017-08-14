@@ -25,15 +25,14 @@ public class BookDataProvider extends AbstractDataProvider<Book, String> {
 
 	@Override
 	public int size(Query<Book, String> query) {
-		// TODO Auto-generated method stub
-		return 0;
+		return service.getBooks(false).size();
 	}
 
 	@Override
 	public Stream<Book> fetch(Query<Book, String> query) {
 		System.out.println(query.getFilter());
-		System.out.println(service.getBooks());
-		System.out.println("service : " + service.getBooks().stream().sorted().count());
-		return service.getBooks().stream().sorted();
+		System.out.println(service.getBooks(false));
+		System.out.println("service : " + service.getBooks(false).stream().sorted().count());
+		return service.getBooks(false).stream().unordered();
 	}
 }

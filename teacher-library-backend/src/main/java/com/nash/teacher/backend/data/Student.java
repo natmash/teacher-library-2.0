@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
-public class Student implements Serializable {
+public class Student implements Serializable, Comparable<Student> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +27,11 @@ public class Student implements Serializable {
 
 	public void setTotalCheckouts(int totalCheckouts) {
 		this.totalCheckouts = totalCheckouts;
+	}
+	
+	@Override
+	public int compareTo(Student arg0) {
+		return getName().compareTo(arg0.getName());
 	}
 
 	@Override

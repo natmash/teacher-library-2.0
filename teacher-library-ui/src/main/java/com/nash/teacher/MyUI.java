@@ -2,12 +2,11 @@ package com.nash.teacher;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.nash.teacher.authentication.AccessControl;
+import com.nash.teacher.authentication.BasicAccessControl;
+import com.nash.teacher.authentication.LoginScreen;
+import com.nash.teacher.authentication.LoginScreen.LoginListener;
 import com.nash.teacher.samples.MainScreen;
-import com.nash.teacher.samples.authentication.AccessControl;
-import com.nash.teacher.samples.authentication.BasicAccessControl;
-import com.nash.teacher.samples.authentication.LoginScreen;
-import com.nash.teacher.samples.authentication.LoginScreen.LoginListener;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Viewport;

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
@@ -23,14 +24,14 @@ public class DatabaseDataService extends DataService {
 	}
 
 	@Override
-	public List<Book> getBooks() {
-		return context.select().from(BOOKS).fetch().map(new BookMapper());
+	public List<Book> getBooks(boolean top) {
+		return context.select().from(BOOKS).orderBy(1).fetch().map(new BookMapper());
 	}
 
 	@Override
 	public void addBook(Book book) {
-//		Table<Record> table = new Table
-//		context.insertInto((Table) null).;
+		// Table<Record> table = new Table
+		// context.insertInto((Table) null).;
 		// context.newRecord();
 	}
 
@@ -61,7 +62,6 @@ public class DatabaseDataService extends DataService {
 	@Override
 	public void checkin(int bookId) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class DatabaseDataService extends DataService {
 	}
 
 	@Override
-	public List<Student> getStudents() {
+	public List<Student> getStudents(boolean topFirst) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -95,15 +95,14 @@ public class DatabaseDataService extends DataService {
 	}
 
 	@Override
-	public List<Checkout> getCheckouts() {
+	public List<Checkout> getCheckouts(boolean active) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Checkout> getCheckouts(String name) {
+	public List<Checkout> getCheckouts(String name, boolean all) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
