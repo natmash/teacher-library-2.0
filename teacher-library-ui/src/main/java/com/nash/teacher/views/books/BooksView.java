@@ -1,12 +1,8 @@
 package com.nash.teacher.views.books;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.nash.teacher.backend.DataService;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
@@ -31,6 +27,7 @@ public class BooksView extends GridLayout implements View {
 		addBookButton.setCaption("Add...");
 		addComponent(addBookButton);
 		setComponentAlignment(addBookButton, Alignment.TOP_RIGHT);
+		addBookButton.addClickListener(click -> addBook());
 
 		grid = new BookGrid(service);
 		grid.setDataProvider(new BookDataProvider(service));
@@ -39,6 +36,11 @@ public class BooksView extends GridLayout implements View {
 
 		setRowExpandRatio(0, 1.0f);
 		setRowExpandRatio(1, 10000.0f);
+	}
+
+	private void addBook() {
+		final AddBookWindow window = new AddBookWindow();
+		getUI().addWindow(window);
 	}
 
 	@Override

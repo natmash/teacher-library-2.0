@@ -1,4 +1,4 @@
-package com.nash.teacher.samples;
+package com.nash.teacher.views;
 
 import com.nash.teacher.MyUI;
 import com.nash.teacher.views.books.BooksView;
@@ -17,6 +17,9 @@ import com.vaadin.ui.HorizontalLayout;
  * 
  */
 public class MainScreen extends HorizontalLayout {
+
+	private static final long serialVersionUID = 1L;
+	
 	private Menu menu;
 
 	public MainScreen(MyUI ui) {
@@ -31,8 +34,6 @@ public class MainScreen extends HorizontalLayout {
 		final Navigator navigator = new Navigator(ui, viewContainer);
 		navigator.setErrorView(ErrorView.class);
 		menu = new Menu(navigator);
-		// menu.addView(new SampleCrudView(), SampleCrudView.VIEW_NAME,
-		// SampleCrudView.VIEW_NAME, VaadinIcons.EDIT);
 		menu.addView(new DashboardView(), DashboardView.VIEW_NAME, DashboardView.VIEW_NAME, VaadinIcons.DASHBOARD);
 		menu.addView(new BooksView(), BooksView.VIEW_NAME, BooksView.VIEW_NAME, VaadinIcons.BOOK);
 		menu.addView(new StudentsView(), StudentsView.VIEW_NAME, StudentsView.VIEW_NAME, VaadinIcons.ACADEMY_CAP);
@@ -49,6 +50,11 @@ public class MainScreen extends HorizontalLayout {
 	// notify the view menu about view changes so that it can display which view
 	// is currently active
 	ViewChangeListener viewChangeListener = new ViewChangeListener() {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public boolean beforeViewChange(ViewChangeEvent event) {

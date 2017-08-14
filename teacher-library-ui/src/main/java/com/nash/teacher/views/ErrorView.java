@@ -1,4 +1,4 @@
-package com.nash.teacher.samples;
+package com.nash.teacher.views;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;

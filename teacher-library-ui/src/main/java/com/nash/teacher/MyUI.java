@@ -6,7 +6,7 @@ import com.nash.teacher.authentication.AccessControl;
 import com.nash.teacher.authentication.BasicAccessControl;
 import com.nash.teacher.authentication.LoginScreen;
 import com.nash.teacher.authentication.LoginScreen.LoginListener;
-import com.nash.teacher.samples.MainScreen;
+import com.nash.teacher.views.MainScreen;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Viewport;

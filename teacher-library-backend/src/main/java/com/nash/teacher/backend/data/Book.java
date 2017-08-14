@@ -28,6 +28,23 @@ public class Book implements Serializable, Comparable<Book> {
 
 	private int totalCheckouts;
 
+	public Book() {
+
+	}
+
+	public Book(final String title, final String author, final String cover, final int pages, final String isbn,
+			final String description) {
+		this.title = title;
+		this.author = author;
+		this.cover = cover;
+		this.pages = pages;
+		this.isbn = isbn;
+		this.description = description;
+		this.available = true;
+		// TODO, get current user
+		this.owner = new Owner();
+	}
+
 	public int getId() {
 		return id;
 	}

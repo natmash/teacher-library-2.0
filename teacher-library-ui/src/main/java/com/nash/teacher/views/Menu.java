@@ -1,4 +1,4 @@
-package com.nash.teacher.samples;
+package com.nash.teacher.views;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -66,6 +66,7 @@ public class MockDataService extends DataService {
 
 	@Override
 	public void addBook(Book book) {
+		System.out.println("adding " + book);
 		books.add(book);
 	}
 

@@ -1,10 +1,13 @@
 package com.nash.teacher.views.books;
 
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.gridutil.GridUtil;
+import org.vaadin.gridutil.cell.GridCellFilter;
 
 import com.nash.teacher.backend.DataService;
 import com.nash.teacher.backend.data.Book;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.SerializableComparator;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
@@ -18,7 +21,7 @@ public class BookGrid extends Grid<Book> {
 	public BookGrid(final DataService service) {
 		setSizeFull();
 
-		addColumn(Book::getTitle).setCaption("Book Title");
+		addColumn(Book::getTitle).setCaption("Book Title").setId("bookTitle");
 		addColumn(Book::getAuthor).setCaption("Author");
 		addColumn(Book::getIsbn).setCaption("ISBN");
 		addColumn(Book::getPages).setCaption("Pages");
