@@ -1,8 +1,15 @@
 package com.nash.teacher.backend;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -18,21 +25,27 @@ public class BookLookup {
 
 	private static final String API_KEY = "AIzaSyBSLkCv1ZQFKHnIvMHMO12_d-UPMQGZ0IA";
 
-	public static Book lookup(final String isbn) throws GeneralSecurityException, IOException {
-		Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(),
-				JacksonFactory.getDefaultInstance(), null).setApplicationName("TeacherClassRoom")
-						.setGoogleClientRequestInitializer(new BooksRequestInitializer(API_KEY)).build();
-		List list = books.volumes().list("isbn:" + isbn);
-		Volumes volumes = list.execute();
+	private static ExecutorService service = Executors.newFixedThreadPool(30);
 
-		if (volumes.getTotalItems() > 0) {
-			if (volumes.getTotalItems() == 1) {
-				return createBook(isbn, volumes.getItems().get(0));
+	public static Book lookup(final String isbn) {
+		Books books;
+		try {
+			books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(),
+					null).setApplicationName("TeacherClassRoom")
+							.setGoogleClientRequestInitializer(new BooksRequestInitializer(API_KEY)).build();
+			List list = books.volumes().list("isbn:" + isbn);
+			Volumes volumes = list.execute();
+			if (volumes != null && volumes.getTotalItems() > 0) {
+				if (volumes.getTotalItems() == 1) {
+					return createBook(isbn, volumes.getItems().get(0));
+				} else {
+					return createBook(isbn, volumes.getItems().get(0));
+				}
 			}
-		} else {
-			System.out.println("Unable to find " + isbn);
+		} catch (GeneralSecurityException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
 		return null;
 	}
 
@@ -44,13 +57,55 @@ public class BookLookup {
 		if (info.getImageLinks() != null) {
 			book.setCover(info.getImageLinks().getThumbnail());
 		}
-		book.setAuthor(Arrays.toString(info.getAuthors().toArray()));
-		book.setPages(info.getPageCount());
+
+		if (info.getSeriesInfo() != null) {
+			System.out.println(info.getSeriesInfo().getShortSeriesBookTitle());
+		}
+		if (info.getAuthors() != null) {
+			book.setAuthor(String.join(", ", info.getAuthors()));
+		} else {
+			book.setAuthor("None");
+		}
+
+		if (info.getPageCount() != null) {
+			book.setPages(info.getPageCount());
+		}
 		book.setIsbn(isbn);
+		book.setAvailable(true);
 		return book;
 	}
 
-	public static void main(String[] args) throws GeneralSecurityException, IOException {
-		lookup("9780763648534");
+	public static void main(String[] args) throws GeneralSecurityException, IOException, InterruptedException {
+		try (BufferedReader br = new BufferedReader(new FileReader("/home/matt/books.txt"))) {
+			String l;
+			final AtomicInteger total = new AtomicInteger(0);
+			final AtomicInteger done = new AtomicInteger(0);
+			final java.util.List<String> notDone = new ArrayList<>();
+			while ((l = br.readLine()) != null) {
+				final String ln = l;
+				service.submit(new Runnable() {
+					@Override
+					public void run() {
+						total.getAndAdd(1);
+						String line = ln.replaceAll("\\s+", "");
+						if (!line.startsWith("//")) {
+							Book book = lookup(line);
+							if (book != null) {
+								done.getAndAdd(1);
+								System.out.println(book.getTitle());
+							} else {
+								notDone.add(line);
+								System.out.println(line + " not found.");
+							}
+						}
+					}
+				});
+			}
+			service.shutdown();
+			while (!service.awaitTermination(10, TimeUnit.MINUTES)) {
+			}
+			System.out.println(Arrays.toString(notDone.toArray()));
+			System.out.println("Found " + done + " out of " + total + ".");
+		}
 	}
 }

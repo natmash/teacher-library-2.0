@@ -131,6 +131,6 @@
     <module>teacher-library-backend</module>
     <module>teacher-library-ui</module>
     <module>teacher-library-production</module>
-<!--    <module>teacher-library-widgetset</module>-->
+    <module>teacher-library-widgetset</module>
   </modules>
 </project>

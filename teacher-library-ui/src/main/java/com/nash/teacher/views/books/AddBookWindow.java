@@ -1,11 +1,12 @@
 package com.nash.teacher.views.books;
 
+import com.nash.teacher.backend.BookLookup;
 import com.nash.teacher.backend.DataService;
 import com.nash.teacher.backend.data.Book;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Notification;
@@ -70,7 +71,7 @@ public class AddBookWindow extends Window {
 		layout.addComponent(pages);
 		// layout.addComponent(cover);
 
-		isbnButton.addClickListener(click -> lookup(isbn.getValue(), title, author, description, pages));
+		isbnButton.addClickListener(click -> lookup(isbn.getValue(), title, author, cover, description, pages));
 		final HorizontalLayout buttonLayout = new HorizontalLayout();
 		buttonLayout.setSizeFull();
 
@@ -84,17 +85,20 @@ public class AddBookWindow extends Window {
 		setContent(layout);
 	}
 
-	private void lookup(final String isbn, final TextField title, final TextField author, final TextArea description,
+	private void lookup(final String isbn, final TextField title, final TextField author, Image cover, final TextArea description,
 			final TextField pages) {
 		if (isbn.isEmpty()) {
 			Notification.show("Must fill in the ISBN.", Type.WARNING_MESSAGE);
 		} else {
-			title.setValue("Title");
-			author.setValue("author");
-			description.setValue("description");
-			pages.setValue("123");
-			DataService.get().addBook(new Book(title.getValue(), author.getValue(), null,
-					Integer.parseInt(pages.getValue()), isbn, description.getValue()));
+			Book book = BookLookup.lookup(isbn);
+			if (book != null) {
+				title.setValue(book.getTitle());
+				author.setValue(book.getAuthor());
+				description.setValue(book.getDescription());
+				cover.setSource(new ExternalResource(book.getCover()));
+				pages.setValue(String.valueOf(book.getPages()));
+				DataService.get().addBook(book);
+			}
 		}
 	}
 }
