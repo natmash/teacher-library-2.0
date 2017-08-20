@@ -6,7 +6,7 @@ import java.util.List;
 import com.nash.teacher.backend.data.Book;
 import com.nash.teacher.backend.data.Checkout;
 import com.nash.teacher.backend.data.Student;
-import com.nash.teacher.backend.mock.MockDataService;
+import com.nash.teacher.backend.impl.DatabaseDataService;
 
 /**
  * Back-end service interface for retrieving and updating books.
@@ -47,7 +47,7 @@ public abstract class DataService implements Serializable {
 
 
 	public static DataService get() {
-		return MockDataService.getInstance();
+		return DatabaseDataService.getInstance();
 	}
 
 }

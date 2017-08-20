@@ -30,7 +30,7 @@ public class BooksView extends GridLayout implements View {
 		addBookButton.addClickListener(click -> addBook());
 
 		grid = new BookGrid(service);
-		grid.setDataProvider(new BookDataProvider(service));
+		grid.setDataProvider(new BookDataProvider(service, false));
 
 		addComponent(grid);
 

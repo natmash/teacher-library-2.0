@@ -19,7 +19,7 @@ import com.vaadin.ui.HorizontalLayout;
 public class MainScreen extends HorizontalLayout {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Menu menu;
 
 	public MainScreen(MyUI ui) {
@@ -37,7 +37,7 @@ public class MainScreen extends HorizontalLayout {
 		menu.addView(new DashboardView(), DashboardView.VIEW_NAME, DashboardView.VIEW_NAME, VaadinIcons.DASHBOARD);
 		menu.addView(new BooksView(), BooksView.VIEW_NAME, BooksView.VIEW_NAME, VaadinIcons.BOOK);
 		menu.addView(new StudentsView(), StudentsView.VIEW_NAME, StudentsView.VIEW_NAME, VaadinIcons.ACADEMY_CAP);
-		menu.addView(new CheckoutsView(), "Checkouts", "Checkouts", VaadinIcons.CHECK);
+		menu.addView(new CheckoutsView(), CheckoutsView.VIEW_NAME, CheckoutsView.VIEW_NAME, VaadinIcons.CHECK);
 
 		navigator.addViewChangeListener(viewChangeListener);
 

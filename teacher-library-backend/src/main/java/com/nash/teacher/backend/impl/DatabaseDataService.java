@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +30,16 @@ public class DatabaseDataService extends DataService {
 
 	private final Handle handle;
 
-	public DatabaseDataService() {
+	private static DatabaseDataService INSTANCE;
+
+	public synchronized static DataService getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new DatabaseDataService();
+		}
+		return INSTANCE;
+	}
+
+	private DatabaseDataService() {
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection("jdbc:mariadb://" + URL, USERNAME, PASSWORD);
@@ -59,6 +69,9 @@ public class DatabaseDataService extends DataService {
 				if (checkout.getBook().getId() == book.getId()) {
 					if (checkout.isActive()) {
 						available = false;
+						if (book.getTotalCheckouts() == null) {
+							book.setTotalCheckouts(1);
+						}
 						book.setTotalCheckouts(book.getTotalCheckouts() + 1);
 					}
 				}
@@ -67,6 +80,12 @@ public class DatabaseDataService extends DataService {
 		}
 
 		if (top) {
+			Collections.sort(books, new Comparator<Book>() {
+				@Override
+				public int compare(Book o1, Book o2) {
+					return o1.getTitle().compareTo(o2.getTitle());
+				}
+			});
 			Collections.sort(books, new Comparator<Book>() {
 				@Override
 				public int compare(Book o1, Book o2) {
@@ -185,6 +204,7 @@ public class DatabaseDataService extends DataService {
 				public int compare(Student o1, Student o2) {
 					return o1.getName().compareTo(o2.getName());
 				}
+
 			});
 		}
 
@@ -197,14 +217,33 @@ public class DatabaseDataService extends DataService {
 	}
 
 	@Override
-	// TODO
 	public List<Checkout> getCheckouts(boolean active) {
-		// return context
-		// .resultQuery(
-		// "select c.*, b.title, s.name from checkouts as c, books b, students s
-		// where c.book=b.id order by c.id")
-		// .fetch().map(new CheckoutMapper());
-		return null;
+		final List<Checkout> checkouts = new ArrayList<>();
+		if (!active) {
+			checkouts.addAll(
+					handle.createQuery("select * from checkouts where end is null").map(new CheckoutMapper()).list());
+		} else {
+			checkouts.addAll(handle.createQuery("select * from checkouts").map(new CheckoutMapper()).list());
+		}
+
+		final List<Book> books = handle.createQuery("select * from books").map(new BookMapper()).list();
+		final List<Student> students = handle.createQuery("select * from students").map(new StudentMapper()).list();
+		for (final Checkout checkout : checkouts) {
+			for (final Book book : books) {
+				if (checkout.getBook().getId() == book.getId()) {
+					checkout.setBook(book);
+					break;
+				}
+			}
+			for (final Student student : students) {
+				if (checkout.getStudent().getName().equals(student.getName())) {
+					checkout.setStudent(student);
+					break;
+				}
+			}
+		}
+
+		return checkouts;
 	}
 
 	@Override

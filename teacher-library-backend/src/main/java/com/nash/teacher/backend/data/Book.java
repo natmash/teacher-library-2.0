@@ -9,10 +9,10 @@ public class Book implements Serializable, Comparable<Book> {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	
+
 	@NotNull
 	private String title = "";
-	
+
 	@NotNull
 	private String author = "";
 
@@ -124,6 +124,9 @@ public class Book implements Serializable, Comparable<Book> {
 	}
 
 	public Integer getTotalCheckouts() {
+		if (totalCheckouts == null) {
+			return 0;
+		}
 		return totalCheckouts;
 	}
 

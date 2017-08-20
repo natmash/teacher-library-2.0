@@ -4,18 +4,21 @@ import java.util.stream.Stream;
 
 import com.nash.teacher.backend.DataService;
 import com.nash.teacher.backend.data.Book;
-import com.vaadin.data.provider.AbstractDataProvider;
+import com.vaadin.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.data.provider.Query;
 
-public class BookDataProvider extends AbstractDataProvider<Book, String> {
+public class BookDataProvider extends AbstractBackEndDataProvider<Book, String> {
 
 	private static final long serialVersionUID = 1L;
 
 	private final DataService service;
 
-	public BookDataProvider(final DataService service) {
+	private final boolean all;
+
+	public BookDataProvider(final DataService service, boolean all) {
 		super();
 		this.service = service;
+		this.all = all;
 	}
 
 	@Override
@@ -24,15 +27,15 @@ public class BookDataProvider extends AbstractDataProvider<Book, String> {
 	}
 
 	@Override
-	public int size(Query<Book, String> query) {
-		return service.getBooks(false).size();
+	protected Stream<Book> fetchFromBackEnd(Query<Book, String> query) {
+		System.out.println("query limit : " + query.getLimit());
+		System.out.println("query offset : " + query.getOffset());
+		return service.getBooks(all).subList(query.getOffset(), query.getOffset() + query.getLimit()).stream()
+				.unordered();
 	}
 
 	@Override
-	public Stream<Book> fetch(Query<Book, String> query) {
-		System.out.println(query.getFilter());
-		System.out.println(service.getBooks(false));
-		System.out.println("service : " + service.getBooks(false).stream().sorted().count());
-		return service.getBooks(false).stream().unordered();
+	protected int sizeInBackEnd(Query<Book, String> query) {
+		return service.getBooks(all).size();
 	}
 }

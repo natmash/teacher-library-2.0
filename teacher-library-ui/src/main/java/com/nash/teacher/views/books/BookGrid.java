@@ -23,9 +23,9 @@ public class BookGrid extends Grid<Book> {
 
 		addColumn(Book::getTitle).setCaption("Book Title").setId("bookTitle");
 		addColumn(Book::getAuthor).setCaption("Author");
-		addColumn(Book::getIsbn).setCaption("ISBN");
-		addColumn(Book::getPages).setCaption("Pages");
-		addColumn(Book::isAvailable).setCaption("Available");
+		addColumn(Book::getIsbn).setCaption("ISBN").setSortable(false);
+		addColumn(Book::getPages).setCaption("Pages").setSortable(false);
+		addColumn(Book::isAvailable).setCaption("Available").setSortable(false);
 
 		addComponentColumn(book -> {
 			HorizontalLayout layout = new HorizontalLayout();
@@ -69,7 +69,7 @@ public class BookGrid extends Grid<Book> {
 			layout.addComponent(deleteButton);
 
 			return layout;
-		});
+		}).setSortable(false);
 		setRowHeight(40);
 	}
 

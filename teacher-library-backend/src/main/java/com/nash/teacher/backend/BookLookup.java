@@ -97,6 +97,7 @@ public class BookLookup {
 								notDone.add(line);
 								System.out.println(line + " not found.");
 							}
+							DataService.get().addBook(book);
 						}
 					}
 				});

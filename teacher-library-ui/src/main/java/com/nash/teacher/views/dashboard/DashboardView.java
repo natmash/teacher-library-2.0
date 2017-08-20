@@ -1,11 +1,13 @@
 package com.nash.teacher.views.dashboard;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import com.nash.teacher.backend.DataService;
 import com.nash.teacher.backend.data.Book;
 import com.nash.teacher.backend.data.Checkout;
 import com.nash.teacher.backend.data.Student;
+import com.nash.teacher.views.books.BookDataProvider;
 import com.vaadin.data.provider.AbstractDataProvider;
 import com.vaadin.data.provider.Query;
 import com.vaadin.navigator.View;
@@ -25,9 +27,15 @@ public class DashboardView extends HorizontalLayout implements View {
 	public DashboardView() {
 		setSizeFull();
 		addStyleName("dashboard-view");
-		addComponent(createTopBooksPanel());
-		addComponent(createTopStudentsPanel());
-		addComponent(createCurrentCheckoutsPanel());
+		Panel topBooks = createTopBooksPanel();
+		Panel topStudents = createTopStudentsPanel();
+		Panel currentCheckouts = createCurrentCheckoutsPanel();
+		addComponent(topBooks);
+		addComponent(topStudents);
+		addComponent(currentCheckouts);
+		setExpandRatio(topBooks, 1.3f);
+		setExpandRatio(topStudents, 0.7f);
+		setExpandRatio(currentCheckouts, 1.0f);
 	}
 
 	private Panel createTopBooksPanel() {
@@ -45,25 +53,10 @@ public class DashboardView extends HorizontalLayout implements View {
 				return arg0.getTitle();
 			}
 		});
-		;
+
 		grid.addColumn(Book::getTotalCheckouts).setCaption("Checkouts");
 		content.addStyleName("topbookspanel");
-		grid.setDataProvider(new AbstractDataProvider<Book, String>() {
-			@Override
-			public Stream<Book> fetch(Query<Book, String> query) {
-				return DataService.get().getBooks(true).stream().unordered();
-			}
-
-			@Override
-			public boolean isInMemory() {
-				return false;
-			}
-
-			@Override
-			public int size(Query<Book, String> query) {
-				return DataService.get().getBooks(true).size();
-			}
-		});
+		grid.setDataProvider(new BookDataProvider(DataService.get(), true));
 		content.addComponent(grid);
 		panel.setContent(content);
 		panel.setSizeFull();
@@ -135,7 +128,11 @@ public class DashboardView extends HorizontalLayout implements View {
 
 			@Override
 			public int size(Query<Checkout, String> query) {
-				return DataService.get().getCheckouts(false).size();
+				List<Checkout> checkouts = DataService.get().getCheckouts(false);
+				if (checkouts == null) {
+					return 0;
+				}
+				return checkouts.size();
 			}
 		});
 		grid.setSizeFull();
