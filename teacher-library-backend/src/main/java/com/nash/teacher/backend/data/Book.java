@@ -8,15 +8,17 @@ public class Book implements Serializable, Comparable<Book> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id = -1;
+	private int id;
+	
 	@NotNull
 	private String title = "";
+	
 	@NotNull
 	private String author = "";
 
 	private String cover;
 
-	private int pages;
+	private Integer pages;
 
 	private String isbn;
 
@@ -26,13 +28,12 @@ public class Book implements Serializable, Comparable<Book> {
 
 	private Owner owner;
 
-	private int totalCheckouts;
+	private Integer totalCheckouts;
 
 	public Book() {
-
 	}
 
-	public Book(final String title, final String author, final String cover, final int pages, final String isbn,
+	public Book(final String title, final String author, final String cover, final Integer pages, final String isbn,
 			final String description) {
 		this.title = title;
 		this.author = author;
@@ -77,11 +78,11 @@ public class Book implements Serializable, Comparable<Book> {
 		this.cover = cover;
 	}
 
-	public int getPages() {
+	public Integer getPages() {
 		return pages;
 	}
 
-	public void setPages(int pages) {
+	public void setPages(Integer pages) {
 		this.pages = pages;
 	}
 
@@ -122,11 +123,11 @@ public class Book implements Serializable, Comparable<Book> {
 		return getTitle();
 	}
 
-	public int getTotalCheckouts() {
+	public Integer getTotalCheckouts() {
 		return totalCheckouts;
 	}
 
-	public void setTotalCheckouts(int totalCheckouts) {
+	public void setTotalCheckouts(Integer totalCheckouts) {
 		this.totalCheckouts = totalCheckouts;
 	}
 

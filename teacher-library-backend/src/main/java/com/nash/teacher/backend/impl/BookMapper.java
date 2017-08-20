@@ -1,26 +1,27 @@
 package com.nash.teacher.backend.impl;
 
-import org.jooq.Record;
-import org.jooq.RecordMapper;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import com.nash.teacher.backend.data.Book;
 import com.nash.teacher.backend.data.Owner;
 
-public class BookMapper implements RecordMapper<Record, Book> {
+public class BookMapper implements ResultSetMapper<Book> {
 
 	@Override
-	public Book map(Record record) {
+	public Book map(int index, ResultSet r, StatementContext ctx) throws SQLException {
 		final Book book = new Book();
-		book.setTitle(record.get("title", String.class));
-		book.setAuthor(record.get("author", String.class));
-		book.setDescription(record.get("description", String.class));
-		book.setCover(record.get("cover", String.class));
-		book.setId(record.get("id", Integer.class));
-		book.setIsbn(record.get("isbn", String.class));
-		book.setPages(record.get("pages", Integer.class));
-		// TODO how do we get available?  Maybe not from this class???
-		book.setAvailable(true);
-		book.setOwner(owner(record.get("owner", String.class)));
+		book.setTitle(r.getString("title"));
+		book.setAuthor(r.getString("author"));
+		book.setCover(r.getString("cover"));
+		book.setDescription(r.getString("description"));
+		book.setId(r.getInt("id"));
+		book.setIsbn(r.getString("isbn"));
+		book.setPages(r.getInt("pages"));
+		book.setOwner(owner(r.getString("owner")));
 		return book;
 	}
 
@@ -29,5 +30,4 @@ public class BookMapper implements RecordMapper<Record, Book> {
 		owner.setName(name);
 		return owner;
 	}
-
 }

@@ -5,12 +5,13 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-public class Checkout implements Serializable, Comparable {
+public class Checkout implements Serializable, Comparable<Checkout> {
 
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
 	private int id;
+
 	@NotNull
 	private Student student;
 
@@ -71,8 +72,7 @@ public class Checkout implements Serializable, Comparable {
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
-		Checkout c1 = (Checkout) arg0;
-		return Integer.compare(this.getId(), c1.getId());
+	public int compareTo(Checkout arg0) {
+		return Integer.compare(this.getId(), arg0.getId());
 	}
 }
