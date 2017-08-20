@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -95,7 +96,7 @@ public class LoginScreen extends CssLayout {
         forgotPassword.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                showNotification(new Notification("Hint: Try anything"));
+                showNotification(new Notification("See Matt for help."));
             }
         });
         forgotPassword.addStyleName(ValoTheme.BUTTON_LINK);
@@ -129,6 +130,7 @@ public class LoginScreen extends CssLayout {
         // keep the notification visible a little while after moving the
         // mouse, or until clicked
         notification.setDelayMsec(2000);
+        notification.setPosition(Position.TOP_CENTER);
         notification.show(Page.getCurrent());
     }
 

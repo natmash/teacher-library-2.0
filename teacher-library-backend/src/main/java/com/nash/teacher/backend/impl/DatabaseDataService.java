@@ -69,23 +69,17 @@ public class DatabaseDataService extends DataService {
 				if (checkout.getBook().getId() == book.getId()) {
 					if (checkout.isActive()) {
 						available = false;
-						if (book.getTotalCheckouts() == null) {
-							book.setTotalCheckouts(1);
-						}
-						book.setTotalCheckouts(book.getTotalCheckouts() + 1);
 					}
+					if (book.getTotalCheckouts() == null) {
+						book.setTotalCheckouts(1);
+					}
+					book.setTotalCheckouts(book.getTotalCheckouts() + 1);
 				}
 			}
 			book.setAvailable(available);
 		}
 
 		if (top) {
-			Collections.sort(books, new Comparator<Book>() {
-				@Override
-				public int compare(Book o1, Book o2) {
-					return o1.getTitle().compareTo(o2.getTitle());
-				}
-			});
 			Collections.sort(books, new Comparator<Book>() {
 				@Override
 				public int compare(Book o1, Book o2) {

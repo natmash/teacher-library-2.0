@@ -1,18 +1,21 @@
 package com.nash.teacher.views.books;
 
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.gridutil.GridUtil;
-import org.vaadin.gridutil.cell.GridCellFilter;
 
 import com.nash.teacher.backend.DataService;
 import com.nash.teacher.backend.data.Book;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.SerializableComparator;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.components.grid.DetailsGenerator;
+import com.vaadin.ui.components.grid.ItemClickListener;
 
 public class BookGrid extends Grid<Book> {
 
@@ -26,6 +29,35 @@ public class BookGrid extends Grid<Book> {
 		addColumn(Book::getIsbn).setCaption("ISBN").setSortable(false);
 		addColumn(Book::getPages).setCaption("Pages").setSortable(false);
 		addColumn(Book::isAvailable).setCaption("Available").setSortable(false);
+
+		setDetailsGenerator(new DetailsGenerator<Book>() {
+			@Override
+			public Component apply(Book t) {
+				HorizontalLayout layout = new HorizontalLayout();
+				Image image = new Image();
+				image.setSource(new ExternalResource(t.getCover()));
+				image.setWidth("128px");
+				image.setHeight("189px");
+
+				Label label = new Label();
+				label.setCaption(t.getDescription());
+				label.setSizeFull();
+				layout.addComponent(image);
+				layout.addComponent(label);
+				return layout;
+			}
+		});
+
+		addItemClickListener(new ItemClickListener<Book>() {
+			@Override
+			public void itemClick(com.vaadin.ui.Grid.ItemClick<Book> event) {
+				if (!isDetailsVisible(event.getItem())) {
+					setDetailsVisible(event.getItem(), true);
+				} else {
+					setDetailsVisible(event.getItem(), false);
+				}
+			}
+		});
 
 		addComponentColumn(book -> {
 			HorizontalLayout layout = new HorizontalLayout();

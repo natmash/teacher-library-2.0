@@ -31,7 +31,7 @@ public class BooksView extends GridLayout implements View {
 
 		grid = new BookGrid(service);
 		grid.setDataProvider(new BookDataProvider(service, false));
-
+		
 		addComponent(grid);
 
 		setRowExpandRatio(0, 1.0f);

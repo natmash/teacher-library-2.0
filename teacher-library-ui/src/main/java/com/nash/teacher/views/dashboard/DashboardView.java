@@ -52,9 +52,9 @@ public class DashboardView extends HorizontalLayout implements View {
 			public String apply(Book arg0) {
 				return arg0.getTitle();
 			}
-		});
+		}).setExpandRatio(10);
 
-		grid.addColumn(Book::getTotalCheckouts).setCaption("Checkouts");
+		grid.addColumn(Book::getTotalCheckouts).setCaption("Checkouts").setExpandRatio(5);
 		content.addStyleName("topbookspanel");
 		grid.setDataProvider(new BookDataProvider(DataService.get(), true));
 		content.addComponent(grid);

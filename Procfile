@@ -1,1 +1,1 @@
-web: mvn clean install; cd teacher-library-ui; mvn jetty:run
+java -jar target/dependency/webapp-runner.jar teacher-library-ui/target/*.war
